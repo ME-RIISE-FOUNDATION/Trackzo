@@ -1,7 +1,8 @@
 {
+  "title": "Trackzo",
   "description": "Streamline construction management with an ERP solution for builders and contractors, offering project tracking, budgeting, and finance management in one platform.",
   "robots": {
-    "index": false
+    "index": true
   },
   "accessibility": {
     "addBypassLinks": false,
