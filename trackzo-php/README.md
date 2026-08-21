@@ -48,19 +48,18 @@ folder (or upload `trackzo-php.zip` and Extract). `index.php` should sit directl
 `public_html` (or a subfolder if you prefer `yourdomain.com/trackzo`).
 
 **4. Run the installer**
-Visit **`https://yourdomain.com/install.php`** once. It creates all tables and loads the
-sample data, and shows your login details.
+Visit **`https://yourdomain.com/install.php`** once. It creates all (empty) tables — no
+sample data.
 
-**5. Log in & clean up**
-Go to **`https://yourdomain.com/login.php`**:
-- Email: `james.carter@trackzo.io`
-- Password: `password123`
+**5. Create your account**
+Go to **`https://yourdomain.com/login.php`** and use the **Sign Up** tab to create the
+first account (it automatically becomes the **Administrator**). Then log in and start
+adding your own clients, projects and records.
 
-Then **delete `install.php`** from the server (security), and change your password in
-**Settings**.
+Finally, **delete `install.php`** from the server for security.
 
 > Prefer phpMyAdmin? Instead of step 4, open phpMyAdmin, select your database, go to the
-> **Import** tab, and import `schema.sql`. It contains all tables + data + the login user.
+> **Import** tab, and import `schema.sql` — it creates the empty tables. Then sign up as above.
 
 ---
 
@@ -70,19 +69,50 @@ Then **delete `install.php`** from the server (security), and change your passwo
 2. Start **Apache** and **MySQL** in the XAMPP control panel.
 3. The default `config.php` already matches XAMPP (`root` / no password / `trackzo`).
    Create the database once: open `http://localhost/phpmyadmin` → New → name it `trackzo`.
-4. Visit `http://localhost/trackzo-php/install.php`, then `.../login.php`.
+4. Visit `http://localhost/trackzo-php/install.php`, then `.../login.php` and **Sign Up**.
 
 ---
 
-## Login
-| Email | Password |
-|-------|----------|
-| james.carter@trackzo.io | password123 |
-
-Passwords are stored **hashed** (bcrypt). All forms are protected against CSRF and use
-prepared statements (no SQL injection).
+## Accounts
+There are **no default logins**. The first person to **Sign Up** becomes the Administrator;
+anyone who signs up afterwards is a Member. Passwords are stored **hashed** (bcrypt), all
+forms are protected against CSRF, and every query uses prepared statements (no SQL
+injection). You can deep-link straight to a tab with `login.php?mode=signup`.
 
 ---
+
+## Admin Panel (single fixed admin)
+Admin access is **restricted to one email**, set at the top of `config.php`:
+```php
+define('ADMIN_EMAIL', 'admin@gmail.com');
+define('ADMIN_DEFAULT_PASSWORD', 'admin123'); // change after first login
+```
+Running `install.php` auto-creates that admin account. Only this email sees the **Admin
+Panel** item and can open `admin.php`; everyone else is a normal customer and is bounced to
+the dashboard if they try. It shows:
+- System stats: total users, who logged in today, total projects, clients, portfolio budget.
+- **User Accounts & Logins** — every registered account with join date, **last login** and
+  access level. The admin can delete customer accounts (the admin account is protected).
+- **All Projects** — every project across the company, with a shortcut into each workspace.
+
+To move admin rights to a different email, change `ADMIN_EMAIL` in `config.php` (and make
+sure an account with that email exists). **Log in the first time as `admin@gmail.com` /
+`admin123`, then change the password in Settings.**
+
+## Project Workspace (per-project dashboards)
+Under **MANAGEMENT → Project Workspace** you get a dedicated dashboard for each project,
+with fully **isolated** data. Pick a project card (or **+ New Project**) to open it; a
+secondary sidebar gives you: Overview, Customer Profile, Owner Details, Site Address,
+Property Measurements, Construction Details, Material Management, Cost Estimation, Expense
+Tracker, Construction Progress, Documents, Reports and Notes.
+
+- **Overview** shows summary cards (Total Budget, Total Expenses, Material Cost, Labour
+  Cost, Progress %, Remaining Budget) plus a progress ring and expense-analysis chart.
+- **Material Management** has full add/edit/delete with Quantity, Unit, Cost, Supplier,
+  Purchase Date, Used Qty, auto Remaining and auto Total Cost.
+- **Documents** supports optional file uploads (saved to `uploads/`).
+
+Every record is tied to its project id, so each project keeps its own independent books.
 
 ## Reports export
 Open **Reports** and use the two buttons top-right:

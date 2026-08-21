@@ -19,10 +19,14 @@ $nav = [
     ['slug' => 'purchase',        'label' => 'Purchase',         'icon' => 'cart',        'file' => 'purchase.php'],
     ['slug' => 'finance',         'label' => 'Finance',          'icon' => 'dollar',      'file' => 'finance.php'],
     ['slug' => 'reports',         'label' => 'Reports',          'icon' => 'bar-chart',   'file' => 'reports.php'],
+    ['slug' => 'workspace',       'label' => 'Project Workspace','icon' => 'building',     'file' => 'workspace.php'],
     ['slug' => 'calendar',        'label' => 'Calendar',         'icon' => 'calendar',    'file' => 'calendar.php'],
     ['slug' => 'account-tracker', 'label' => 'Account Tracker',  'icon' => 'credit-card', 'file' => 'account_tracker.php'],
     ['slug' => 'settings',        'label' => 'Settings',         'icon' => 'settings',    'file' => 'settings.php'],
 ];
+if (is_admin()) {
+    $nav[] = ['slug' => 'admin', 'label' => 'Admin Panel', 'icon' => 'shield', 'file' => 'admin.php'];
+}
 $avatar = strtoupper(substr($user['name'] ?? 'U', 0, 1));
 if (!empty($user['name'])) {
     $parts = preg_split('/\s+/', trim($user['name']));

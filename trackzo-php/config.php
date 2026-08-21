@@ -17,6 +17,8 @@ define('DB_PASS', '');              // your database password
 // App settings
 define('APP_NAME', 'Trackzo');
 define('APP_CURRENCY', '₹');   // Indian Rupee
+define('ADMIN_EMAIL', 'admin@gmail.com');   // ONLY this email has Admin Panel access
+define('ADMIN_DEFAULT_PASSWORD', 'admin123'); // starter password for the admin account (change after first login)
 
 // --- Do not edit below this line ------------------------------------
 date_default_timezone_set('UTC');

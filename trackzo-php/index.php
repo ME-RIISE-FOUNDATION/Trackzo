@@ -19,7 +19,8 @@ $statusMap  = ['active'=>0,'completed'=>0,'planning'=>0,'on-hold'=>0];
 foreach ($statusRows as $r) $statusMap[$r['status']] = (int) $r['c'];
 $statusColors = ['active'=>'#1D4ED8','completed'=>'#10B981','planning'=>'#F59E0B','on-hold'=>'#EF4444'];
 $statusLabels = ['active'=>'Active','completed'=>'Completed','planning'=>'Planning','on-hold'=>'On Hold'];
-$statusTotal  = max(1, array_sum($statusMap));
+$statusReal   = array_sum($statusMap);
+$statusTotal  = max(1, $statusReal);
 // build conic-gradient
 $acc = 0; $segments = [];
 foreach ($statusMap as $k => $v) {
@@ -28,7 +29,7 @@ foreach ($statusMap as $k => $v) {
     $end = $acc / $statusTotal * 360;
     $segments[] = $statusColors[$k] . " {$start}deg {$end}deg";
 }
-$conic = 'conic-gradient(' . implode(',', $segments) . ')';
+$conic = $statusReal > 0 ? 'conic-gradient(' . implode(',', $segments) . ')' : '#E2E8F0';
 
 // Monthly income vs expense from transactions
 $txns = $db->query("SELECT txn_date, type, amount FROM transactions")->fetchAll();
